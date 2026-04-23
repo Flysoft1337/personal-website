@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/:path+",
+        source: "/((?!_next|api|icon|opengraph-image|favicon.ico).*)",
         destination: "/",
         permanent: false,
       },
