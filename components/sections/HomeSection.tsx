@@ -11,10 +11,10 @@ const roles = [
 ];
 
 const stats = [
-  { label: "仓库", labelEn: "Repos",     value: "9+" },
-  { label: "语言", labelEn: "Languages", value: "8+" },
-  { label: "加入", labelEn: "Since",     value: "2022" },
-  { label: "状态", labelEn: "Status",    value: "活跃" },
+  { label: "仓库", value: "9+" },
+  { label: "语言", value: "8+" },
+  { label: "加入", value: "2022" },
+  { label: "状态", value: "活跃" },
 ];
 
 function GithubIcon() {
@@ -50,14 +50,14 @@ export default function HomeSection() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col px-7 py-6 gap-5">
+    <div className="h-full flex flex-col px-5 py-5 gap-4 overflow-y-auto">
 
-      {/* 顶部栏：问候 + 时间 */}
+      {/* 顶部栏 */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex items-center justify-between"
+        className="flex items-center justify-between shrink-0"
       >
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -65,28 +65,28 @@ export default function HomeSection() {
         </div>
         {time && (
           <div
-            className="flex items-center gap-3 px-3 py-1.5 rounded-xl"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl"
             style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
           >
-            <span className="text-slate-500 text-xs">{date}</span>
-            <span className="text-slate-200 text-sm font-mono tracking-widest">{time}</span>
-            <span className="text-slate-600 text-xs hidden sm:block">{timezone}</span>
+            <span className="text-slate-500 text-xs hidden sm:block">{date}</span>
+            <span className="text-slate-200 text-xs font-mono tracking-widest">{time}</span>
+            <span className="text-slate-600 text-xs hidden md:block">{timezone}</span>
           </div>
         )}
       </motion.div>
 
-      {/* 主体：左右两列 */}
-      <div className="flex gap-6 flex-1 min-h-0">
+      {/* 主体：移动端垂直堆叠 / 桌面端左右分列 */}
+      <div className="flex flex-col md:flex-row gap-5 flex-1 min-h-0">
 
-        {/* 左列：头像 + 名字 + 角色 */}
+        {/* 左列 */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex flex-col items-center justify-center gap-4 w-44 shrink-0"
+          className="flex flex-row md:flex-col items-center md:justify-center gap-4 md:w-44 shrink-0"
         >
           {/* 头像 */}
-          <div className="relative">
+          <div className="relative shrink-0">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
@@ -97,16 +97,16 @@ export default function HomeSection() {
             <Image
               src="https://avatars.githubusercontent.com/u/97880172?v=4"
               alt="Flysoft"
-              width={100}
-              height={100}
-              className="relative rounded-full border border-white/10 z-10"
+              width={80}
+              height={80}
+              className="relative rounded-full border border-white/10 z-10 md:!w-[100px] md:!h-[100px]"
             />
           </div>
 
-          {/* 名字 */}
-          <div className="text-center">
+          {/* 名字 + 角色 */}
+          <div className="text-left md:text-center flex-1 md:flex-none">
             <h1
-              className="text-3xl font-bold"
+              className="text-2xl md:text-3xl font-bold"
               style={{
                 background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
                 WebkitBackgroundClip: "text",
@@ -116,8 +116,7 @@ export default function HomeSection() {
             >
               Flysoft
             </h1>
-            {/* 角色切换 */}
-            <div className="h-10 flex items-center justify-center mt-1">
+            <div className="h-9 flex items-center md:justify-center mt-0.5">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={roleIndex}
@@ -125,7 +124,6 @@ export default function HomeSection() {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="text-center"
                 >
                   <p className="text-slate-300 text-xs font-medium">{roles[roleIndex].zh}</p>
                   <p className="text-slate-600 text-xs mt-0.5">{roles[roleIndex].en}</p>
@@ -135,7 +133,7 @@ export default function HomeSection() {
           </div>
 
           {/* 按钮 */}
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-row md:flex-col gap-2 md:w-full">
             <a
               href="https://github.com/Flysoft1337"
               target="_blank"
@@ -155,12 +153,12 @@ export default function HomeSection() {
           </div>
         </motion.div>
 
-        {/* 右列：座右铭 + 简介 + 标签 */}
+        {/* 右列 */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="flex flex-col gap-4 flex-1 min-w-0 justify-center"
+          className="flex flex-col gap-3 flex-1 min-w-0 justify-center"
         >
           {/* 座右铭 */}
           <div
@@ -170,7 +168,7 @@ export default function HomeSection() {
             <p className="text-slate-300 text-sm italic leading-relaxed">
               &ldquo;代码是思想的具体化，优雅的实现胜过暴力&rdquo;
             </p>
-            <p className="text-slate-600 text-xs mt-1.5 italic">Elegance over brute force.</p>
+            <p className="text-slate-600 text-xs mt-1 italic">Elegance over brute force.</p>
           </div>
 
           {/* 简介 */}
@@ -187,7 +185,7 @@ export default function HomeSection() {
             </p>
           </div>
 
-          {/* 统计卡片 */}
+          {/* 统计 */}
           <div className="grid grid-cols-4 gap-2">
             {stats.map((s, i) => (
               <motion.div
@@ -214,7 +212,7 @@ export default function HomeSection() {
             ))}
           </div>
 
-          {/* 技术标签 */}
+          {/* 技术栈 */}
           <div>
             <p className="text-slate-600 text-xs mb-2">技术栈 / Stack</p>
             <div className="flex flex-wrap gap-1.5">
@@ -223,7 +221,7 @@ export default function HomeSection() {
                   key={tag}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + i * 0.05 }}
+                  transition={{ delay: 0.3 + i * 0.04 }}
                   className="px-2.5 py-1 rounded-lg text-xs text-slate-300"
                   style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
@@ -263,7 +261,7 @@ export default function HomeSection() {
           </div>
 
           {/* 诗句 */}
-          <div className="mt-auto pt-1 border-t border-white/5">
+          <div className="pt-1 border-t border-white/5">
             <p className="text-slate-600 text-xs italic">苔锁深门非避世，留盏昏灯候叩扉</p>
           </div>
         </motion.div>
