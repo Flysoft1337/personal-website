@@ -1,15 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface Orb { id: number; x: number; y: number; size: number; color: string; duration: number; delay: number; }
-interface Particle { id: number; x: number; y: number; size: number; duration: number; delay: number; }
 
 export default function Background() {
   const [orbs, setOrbs] = useState<Orb[]>([]);
-  const [particles, setParticles] = useState<Particle[]>([]);
   const reduced = useReducedMotion();
 
   useEffect(() => {
@@ -26,25 +23,17 @@ export default function Background() {
       size: d.size,
       color: d.color,
       duration: 14 + Math.random() * 8,
-      delay: i * 1.2,
-    })));
-    setParticles(Array.from({ length: reduced ? 0 : 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 1.5 + 0.5,
-      duration: 10 + Math.random() * 8,
-      delay: Math.random() * 5,
+      delay: -(i * 3),
     })));
   }, [reduced]);
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ willChange: "transform" }}>
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
       <div className="absolute inset-0" style={{ background: "#050810" }} />
 
-      {/* 光球 — 去掉 mixBlendMode，改用透明度叠加，减少 GPU 合成层 */}
-      {orbs.map((orb) => (
-        <motion.div
+      {/* 光球 — 纯 CSS 动画 */}
+      {orbs.map((orb, i) => (
+        <div
           key={orb.id}
           className="absolute rounded-full"
           style={{
@@ -55,13 +44,9 @@ export default function Background() {
             transform: "translate(-50%, -50%)",
             background: `radial-gradient(circle at 40% 40%, ${orb.color}50 0%, ${orb.color}20 40%, transparent 70%)`,
             filter: "blur(60px)",
+            animation: reduced ? "none" : `orb-${i} ${orb.duration}s ${orb.delay}s ease-in-out infinite`,
             willChange: "transform",
           }}
-          animate={reduced ? {} : {
-            x: [0, 60, -40, 20, 0],
-            y: [0, -40, 60, -20, 0],
-          }}
-          transition={{ duration: orb.duration, delay: orb.delay, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
 
@@ -78,15 +63,33 @@ export default function Background() {
         }}
       />
 
-      {!reduced && particles.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute rounded-full"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, background: "rgba(200,210,255,0.4)", willChange: "transform, opacity" }}
-          animate={{ y: [-12, 12, -12], opacity: [0.06, 0.4, 0.06] }}
-          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ))}
+      {/* CSS keyframes */}
+      <style>{`
+        @keyframes orb-0 {
+          0%, 100% { transform: translate(-50%, -50%) translate(0px, 0px); }
+          25%       { transform: translate(-50%, -50%) translate(60px, -40px); }
+          50%       { transform: translate(-50%, -50%) translate(-40px, 60px); }
+          75%       { transform: translate(-50%, -50%) translate(20px, -20px); }
+        }
+        @keyframes orb-1 {
+          0%, 100% { transform: translate(-50%, -50%) translate(0px, 0px); }
+          25%       { transform: translate(-50%, -50%) translate(-50px, 50px); }
+          50%       { transform: translate(-50%, -50%) translate(60px, -30px); }
+          75%       { transform: translate(-50%, -50%) translate(-20px, 40px); }
+        }
+        @keyframes orb-2 {
+          0%, 100% { transform: translate(-50%, -50%) translate(0px, 0px); }
+          25%       { transform: translate(-50%, -50%) translate(-60px, -40px); }
+          50%       { transform: translate(-50%, -50%) translate(40px, 50px); }
+          75%       { transform: translate(-50%, -50%) translate(30px, -50px); }
+        }
+        @keyframes orb-3 {
+          0%, 100% { transform: translate(-50%, -50%) translate(0px, 0px); }
+          25%       { transform: translate(-50%, -50%) translate(50px, -60px); }
+          50%       { transform: translate(-50%, -50%) translate(-30px, -40px); }
+          75%       { transform: translate(-50%, -50%) translate(60px, 30px); }
+        }
+      `}</style>
     </div>
   );
 }
