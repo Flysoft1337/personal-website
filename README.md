@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# personal-website
 
-## Getting Started
+Flysoft 的个人主页，基于 Next.js 构建，采用 macOS 风格的玻璃拟态设计。
 
-First, run the development server:
+## 预览
+
+动态背景 + 中央玻璃窗口 + 底部 Dock 导航，点击切换各板块内容。
+
+## 技术栈
+
+- **框架** — Next.js 16 + React 19
+- **样式** — Tailwind CSS v4
+- **动画** — Framer Motion
+- **语言** — TypeScript
+
+## 功能
+
+- 液态玻璃拟态 UI，背景光球实时浮动
+- 底部 Dock 导航，平滑切换六个板块（首页、关于、技能、项目、博客、联系）
+- 首页实时时钟，根据访客时区显示当前时间
+- 头像旋转渐变光圈 + 角色文字循环切换
+- 全响应式布局
+
+## 本地运行
 
 ```bash
+# 安装依赖
+npm install
+
+# 启动开发服务器
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+打开 [http://localhost:3000](http://localhost:3000) 查看。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 部署
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+项目部署于 [Vercel](https://vercel.com)，推送到 `master` 分支自动触发部署。
 
-## Learn More
+## 目录结构
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+├── globals.css       # 全局样式、玻璃拟态工具类
+├── layout.tsx        # 根布局
+└── page.tsx          # 主页面
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+components/
+├── Background.tsx    # 动态背景（光球 + 粒子）
+├── GlassWindow.tsx   # 玻璃窗口容器
+├── Dock.tsx          # 底部导航栏
+└── sections/
+    ├── HomeSection.tsx
+    ├── AboutSection.tsx
+    ├── SkillsSection.tsx
+    ├── ProjectsSection.tsx
+    ├── BlogSection.tsx
+    └── ContactSection.tsx
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
