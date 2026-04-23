@@ -31,36 +31,25 @@ export default function GlassWindow({ active }: Props) {
       className="relative w-full max-w-5xl mx-auto"
       style={{ height: "min(640px, 76vh)" }}
     >
-      {/* 外层漫射光晕 */}
-      <motion.div
+      {/* 外层静态光晕 */}
+      <div
         className="absolute pointer-events-none"
-        style={{ inset: "-80px", borderRadius: "50%" }}
-        animate={{ opacity: [0.6, 0.9, 0.6] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div style={{
-          width: "100%", height: "100%",
-          background: "radial-gradient(ellipse 80% 60% at 35% 40%, rgba(59,130,246,0.25) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 70% 65%, rgba(139,92,246,0.22) 0%, transparent 55%)",
+        style={{
+          inset: "-60px",
+          background: "radial-gradient(ellipse 80% 60% at 35% 40%, rgba(59,130,246,0.18) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 70% 65%, rgba(139,92,246,0.15) 0%, transparent 55%)",
           filter: "blur(8px)",
-        }} />
-      </motion.div>
+        }}
+      />
 
-      {/* 渐变边框 */}
-      <motion.div
+      {/* 静态渐变边框 */}
+      <div
         className="absolute pointer-events-none"
-        style={{ inset: 0, borderRadius: "24px", padding: "1px",
+        style={{
+          inset: 0, borderRadius: "24px", padding: "1px",
+          background: "linear-gradient(135deg, rgba(99,130,246,0.6), rgba(139,92,246,0.45), rgba(236,72,153,0.25), rgba(59,130,246,0.35))",
           WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor", maskComposite: "exclude",
         }}
-        animate={{
-          background: [
-            "linear-gradient(135deg, rgba(99,130,246,0.7), rgba(139,92,246,0.5), rgba(236,72,153,0.3), rgba(59,130,246,0.4))",
-            "linear-gradient(225deg, rgba(139,92,246,0.7), rgba(236,72,153,0.5), rgba(59,130,246,0.4), rgba(99,130,246,0.3))",
-            "linear-gradient(315deg, rgba(59,130,246,0.6), rgba(99,130,246,0.7), rgba(139,92,246,0.4), rgba(236,72,153,0.35))",
-            "linear-gradient(135deg, rgba(99,130,246,0.7), rgba(139,92,246,0.5), rgba(236,72,153,0.3), rgba(59,130,246,0.4))",
-          ],
-        }}
-        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
       />
 
       {/* 主玻璃面板 */}
@@ -81,22 +70,12 @@ export default function GlassWindow({ active }: Props) {
           style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), rgba(255,255,255,0.15), transparent)" }}
         />
 
-        {/* 扫光动画 */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none z-20"
-          style={{ borderRadius: "24px", overflow: "hidden" }}
-          initial={false}
-        >
-          <motion.div
-            style={{
-              position: "absolute", top: 0, bottom: 0, width: "30%",
-              background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)",
-              transform: "skewX(-15deg)",
-            }}
-            animate={reduced ? {} : { left: ["-30%", "130%"] }}
-            transition={{ duration: 3.5, repeat: Infinity, repeatDelay: 4, ease: "easeInOut" }}
-          />
-        </motion.div>
+        {/* 扫光 — CSS 动画 */}
+        {!reduced && (
+          <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden" style={{ borderRadius: "24px" }}>
+            <div className="sweep-light" />
+          </div>
+        )}
 
         {/* 内部彩色折射层 */}
         <div
@@ -135,6 +114,23 @@ export default function GlassWindow({ active }: Props) {
           </AnimatePresence>
         </div>
       </div>
+
+      <style>{`
+        .sweep-light {
+          position: absolute;
+          top: 0; bottom: 0;
+          width: 30%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+          transform: skewX(-15deg);
+          animation: sweep 7.5s 2s ease-in-out infinite;
+          will-change: transform;
+        }
+        @keyframes sweep {
+          0%   { left: -30%; }
+          40%  { left: 130%; }
+          100% { left: 130%; }
+        }
+      `}</style>
     </motion.div>
   );
 }
