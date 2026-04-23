@@ -1,54 +1,52 @@
 # personal-website
 
-Flysoft 的个人主页，基于 Next.js 构建，采用 macOS 风格的玻璃拟态设计。
+> Flysoft 的个人主页 · [flysoft.top](https://flysoft.top)
 
-## 预览
-
-动态背景 + 中央玻璃窗口 + 底部 Dock 导航，点击切换各板块内容。
+macOS 风格玻璃拟态设计，动态背景光球 + 中央玻璃窗口 + 底部 Dock 导航。
 
 ## 技术栈
 
-- **框架** — Next.js 16 + React 19
-- **样式** — Tailwind CSS v4
-- **动画** — Framer Motion
-- **语言** — TypeScript
+| | |
+|---|---|
+| 框架 | Next.js 16 + React 19 |
+| 语言 | TypeScript |
+| 样式 | Tailwind CSS v4 |
+| 动画 | Framer Motion + CSS Animations |
+| 部署 | Vercel + Cloudflare CDN |
 
-## 功能
+## 特性
 
-- 液态玻璃拟态 UI，背景光球实时浮动
-- 底部 Dock 导航，平滑切换六个板块（首页、关于、技能、项目、博客、联系）
-- 首页实时时钟，根据访客时区显示当前时间
+- 玻璃拟态 UI，背景 CSS 光球动画（纯 GPU 合成线程，低开销）
+- 底部 Dock 导航，切换六个板块：首页、关于、技能、项目、博客、联系
+- 实时时钟，根据访客时区自动显示
 - 头像旋转渐变光圈 + 角色文字循环切换
-- 全响应式布局
+- 响应式布局，移动端适配
+- `prefers-reduced-motion` 支持，自动关闭动画
+- OpenGraph / Twitter Card 元数据 + 动态 og:image
 
 ## 本地运行
 
 ```bash
-# 安装依赖
 npm install
-
-# 启动开发服务器
 npm run dev
 ```
 
-打开 [http://localhost:3000](http://localhost:3000) 查看。
-
-## 部署
-
-项目部署于 [Vercel](https://vercel.com)，推送到 `master` 分支自动触发部署。
+访问 [http://localhost:3000](http://localhost:3000)
 
 ## 目录结构
 
 ```
 app/
-├── globals.css       # 全局样式、玻璃拟态工具类
-├── layout.tsx        # 根布局
-└── page.tsx          # 主页面
+├── globals.css
+├── layout.tsx
+├── page.tsx
+├── icon.tsx              # 动态 favicon
+└── opengraph-image.tsx   # 动态 og:image
 
 components/
-├── Background.tsx    # 动态背景（光球 + 粒子）
-├── GlassWindow.tsx   # 玻璃窗口容器
-├── Dock.tsx          # 底部导航栏
+├── Background.tsx        # CSS 光球背景
+├── GlassWindow.tsx       # 玻璃窗口容器
+├── Dock.tsx              # 底部导航
 └── sections/
     ├── HomeSection.tsx
     ├── AboutSection.tsx
@@ -56,7 +54,15 @@ components/
     ├── ProjectsSection.tsx
     ├── BlogSection.tsx
     └── ContactSection.tsx
+
+hooks/
+└── useReducedMotion.ts
 ```
+
+## 分支说明
+
+- `master` — 生产分支，Vercel 自动部署
+- `dev` — 开发分支，PR 合并到 master 触发部署
 
 ## License
 
