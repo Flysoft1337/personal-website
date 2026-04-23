@@ -52,7 +52,7 @@ export default function HomeSection() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col px-5 py-5 gap-4 overflow-y-auto">
+    <div className="h-full flex flex-col px-5 py-5 gap-4 overflow-y-auto scrollbar-hidden">
 
       {/* 顶部栏 */}
       <motion.div
