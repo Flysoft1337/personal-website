@@ -14,12 +14,10 @@ export default function Background() {
 
   useEffect(() => {
     const defs = [
-      { color: "#3b82f6", x: 10, y: 15, size: 700 },
-      { color: "#8b5cf6", x: 80, y: 10, size: 650 },
-      { color: "#ec4899", x: 90, y: 75, size: 580 },
-      { color: "#06b6d4", x: 5,  y: 80, size: 620 },
-      { color: "#6366f1", x: 50, y: 45, size: 500 },
-      { color: "#f59e0b", x: 55, y: 85, size: 400 },
+      { color: "#3b82f6", x: 10, y: 15, size: 600 },
+      { color: "#8b5cf6", x: 80, y: 10, size: 560 },
+      { color: "#ec4899", x: 88, y: 78, size: 500 },
+      { color: "#06b6d4", x: 5,  y: 80, size: 520 },
     ];
     setOrbs(defs.map((d, i) => ({
       id: i,
@@ -27,23 +25,24 @@ export default function Background() {
       y: d.y + (Math.random() - 0.5) * 8,
       size: d.size,
       color: d.color,
-      duration: 11 + Math.random() * 7,
-      delay: i * 0.8,
+      duration: 14 + Math.random() * 8,
+      delay: i * 1.2,
     })));
-    setParticles(Array.from({ length: reduced ? 0 : 50 }, (_, i) => ({
+    setParticles(Array.from({ length: reduced ? 0 : 20 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 1.8 + 0.5,
-      duration: 7 + Math.random() * 9,
+      size: Math.random() * 1.5 + 0.5,
+      duration: 10 + Math.random() * 8,
       delay: Math.random() * 5,
     })));
   }, [reduced]);
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ willChange: "transform" }}>
       <div className="absolute inset-0" style={{ background: "#050810" }} />
 
+      {/* 光球 — 去掉 mixBlendMode，改用透明度叠加，减少 GPU 合成层 */}
       {orbs.map((orb) => (
         <motion.div
           key={orb.id}
@@ -54,14 +53,13 @@ export default function Background() {
             width: orb.size,
             height: orb.size,
             transform: "translate(-50%, -50%)",
-            background: `radial-gradient(circle at 40% 40%, ${orb.color}70 0%, ${orb.color}30 35%, transparent 68%)`,
-            filter: "blur(50px)",
-            mixBlendMode: "screen",
+            background: `radial-gradient(circle at 40% 40%, ${orb.color}50 0%, ${orb.color}20 40%, transparent 70%)`,
+            filter: "blur(60px)",
+            willChange: "transform",
           }}
           animate={reduced ? {} : {
-            x: [0, 80, -60, 40, -20, 0],
-            y: [0, -60, 80, -30, 50, 0],
-            scale: [1, 1.25, 0.85, 1.15, 0.95, 1],
+            x: [0, 60, -40, 20, 0],
+            y: [0, -40, 60, -20, 0],
           }}
           transition={{ duration: orb.duration, delay: orb.delay, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -84,8 +82,8 @@ export default function Background() {
         <motion.div
           key={p.id}
           className="absolute rounded-full"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, background: "rgba(200,210,255,0.5)" }}
-          animate={{ y: [-14, 14, -14], opacity: [0.08, 0.5, 0.08] }}
+          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, background: "rgba(200,210,255,0.4)", willChange: "transform, opacity" }}
+          animate={{ y: [-12, 12, -12], opacity: [0.06, 0.4, 0.06] }}
           transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
