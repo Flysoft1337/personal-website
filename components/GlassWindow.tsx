@@ -9,112 +9,122 @@ import BlogSection from "./sections/BlogSection";
 import ContactSection from "./sections/ContactSection";
 
 const sectionMap: Record<string, React.ReactNode> = {
-  home: <HomeSection />,
-  about: <AboutSection />,
-  skills: <SkillsSection />,
+  home:     <HomeSection />,
+  about:    <AboutSection />,
+  skills:   <SkillsSection />,
   projects: <ProjectsSection />,
-  blog: <BlogSection />,
-  contact: <ContactSection />,
+  blog:     <BlogSection />,
+  contact:  <ContactSection />,
 };
 
-interface Props {
-  active: string;
-}
+interface Props { active: string; }
 
 export default function GlassWindow({ active }: Props) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.94, y: 24 }}
+      initial={{ opacity: 0, scale: 0.93, y: 28 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       className="relative w-full max-w-2xl mx-auto"
       style={{ height: "min(640px, 76vh)" }}
     >
-      {/* 底层漫射光晕 */}
-      <div
+      {/* 外层漫射光晕 */}
+      <motion.div
         className="absolute pointer-events-none"
-        style={{
-          inset: "-40px",
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(59,130,246,0.12) 0%, rgba(139,92,246,0.08) 50%, transparent 100%)",
-          filter: "blur(20px)",
-        }}
-      />
+        style={{ inset: "-80px", borderRadius: "50%" }}
+        animate={{ opacity: [0.6, 0.9, 0.6] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div style={{
+          width: "100%", height: "100%",
+          background: "radial-gradient(ellipse 80% 60% at 35% 40%, rgba(59,130,246,0.25) 0%, transparent 55%), radial-gradient(ellipse 60% 50% at 70% 65%, rgba(139,92,246,0.22) 0%, transparent 55%)",
+          filter: "blur(8px)",
+        }} />
+      </motion.div>
 
-      {/* 彩色渐变边框层 */}
-      <div
-        className="absolute rounded-3xl pointer-events-none"
-        style={{
-          inset: "-1px",
-          background:
-            "linear-gradient(135deg, rgba(59,130,246,0.5) 0%, rgba(139,92,246,0.4) 40%, rgba(59,130,246,0.1) 80%, rgba(139,92,246,0.3) 100%)",
-          borderRadius: "25px",
-          padding: "1px",
+      {/* 渐变边框 */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{ inset: 0, borderRadius: "24px", padding: "1px",
           WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          WebkitMaskComposite: "xor",
-          maskComposite: "exclude",
+          WebkitMaskComposite: "xor", maskComposite: "exclude",
         }}
+        animate={{
+          background: [
+            "linear-gradient(135deg, rgba(99,130,246,0.7), rgba(139,92,246,0.5), rgba(236,72,153,0.3), rgba(59,130,246,0.4))",
+            "linear-gradient(225deg, rgba(139,92,246,0.7), rgba(236,72,153,0.5), rgba(59,130,246,0.4), rgba(99,130,246,0.3))",
+            "linear-gradient(315deg, rgba(59,130,246,0.6), rgba(99,130,246,0.7), rgba(139,92,246,0.4), rgba(236,72,153,0.35))",
+            "linear-gradient(135deg, rgba(99,130,246,0.7), rgba(139,92,246,0.5), rgba(236,72,153,0.3), rgba(59,130,246,0.4))",
+          ],
+        }}
+        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
       />
 
       {/* 主玻璃面板 */}
       <div
-        className="relative w-full h-full rounded-3xl overflow-hidden flex flex-col"
+        className="relative w-full h-full overflow-hidden flex flex-col"
         style={{
-          background:
-            "linear-gradient(145deg, rgba(15,20,40,0.45) 0%, rgba(8,12,26,0.6) 50%, rgba(12,16,36,0.5) 100%)",
-          backdropFilter: "blur(48px) saturate(180%)",
-          WebkitBackdropFilter: "blur(48px) saturate(180%)",
+          borderRadius: "24px",
+          background: "rgba(8, 12, 28, 0.18)",
+          backdropFilter: "blur(48px) saturate(220%) brightness(1.05)",
+          WebkitBackdropFilter: "blur(48px) saturate(220%) brightness(1.05)",
           border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow:
-            "0 40px 100px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,255,255,0.05) inset, inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.25)",
+          boxShadow: "0 40px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.15)",
         }}
       >
         {/* 顶部高光条 */}
         <div
-          className="absolute top-0 left-12 right-12 h-px pointer-events-none z-10"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), rgba(255,255,255,0.08), transparent)",
-          }}
+          className="absolute top-0 left-20 right-20 h-px pointer-events-none z-20"
+          style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), rgba(255,255,255,0.15), transparent)" }}
         />
 
-        {/* 左侧边缘内发光 */}
+        {/* 扫光动画 */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none z-20"
+          style={{ borderRadius: "24px", overflow: "hidden" }}
+          initial={false}
+        >
+          <motion.div
+            style={{
+              position: "absolute", top: 0, bottom: 0, width: "30%",
+              background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)",
+              transform: "skewX(-15deg)",
+            }}
+            animate={{ left: ["-30%", "130%"] }}
+            transition={{ duration: 3.5, repeat: Infinity, repeatDelay: 4, ease: "easeInOut" }}
+          />
+        </motion.div>
+
+        {/* 内部彩色折射层 */}
         <div
-          className="absolute top-0 left-0 bottom-0 w-px pointer-events-none z-10"
+          className="absolute inset-0 pointer-events-none z-0"
           style={{
-            background:
-              "linear-gradient(180deg, rgba(99,130,246,0.4) 0%, rgba(139,92,246,0.2) 50%, transparent 100%)",
+            background: "linear-gradient(135deg, rgba(59,130,246,0.06) 0%, transparent 40%, rgba(139,92,246,0.05) 70%, transparent 100%)",
+            borderRadius: "24px",
           }}
         />
 
-        {/* 右侧边缘内发光 */}
-        <div
-          className="absolute top-0 right-0 bottom-0 w-px pointer-events-none z-10"
-          style={{
-            background:
-              "linear-gradient(180deg, transparent 0%, rgba(139,92,246,0.2) 50%, rgba(59,130,246,0.15) 100%)",
-          }}
-        />
+        {/* 左边缘发光 */}
+        <div className="absolute top-6 left-0 bottom-6 w-px pointer-events-none z-10"
+          style={{ background: "linear-gradient(180deg, transparent, rgba(99,130,246,0.6), rgba(139,92,246,0.3), transparent)" }} />
 
-        {/* 内容噪点质感叠加 */}
-        <div
-          className="absolute inset-0 pointer-events-none z-0 opacity-20"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E\")",
-            backgroundSize: "128px",
-          }}
-        />
+        {/* 右边缘发光 */}
+        <div className="absolute top-6 right-0 bottom-6 w-px pointer-events-none z-10"
+          style={{ background: "linear-gradient(180deg, transparent, rgba(139,92,246,0.5), rgba(59,130,246,0.3), transparent)" }} />
 
-        {/* 内容区域 */}
+        {/* 底部边缘微光 */}
+        <div className="absolute bottom-0 left-12 right-12 h-px pointer-events-none z-10"
+          style={{ background: "linear-gradient(90deg, transparent, rgba(139,92,246,0.2), transparent)" }} />
+
+        {/* 内容 */}
         <div className="flex-1 overflow-hidden relative z-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.28, ease: "easeInOut" }}
               className="absolute inset-0"
             >
               {sectionMap[active]}
