@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface Orb { id: number; x: number; y: number; size: number; color: string; duration: number; delay: number; }
-interface Particle { id: number; x: number; y: number; size: number; duration: number; delay: number; }
 
 export default function Background() {
   const [orbs, setOrbs] = useState<Orb[]>([]);
-  const [particles, setParticles] = useState<Particle[]>([]);
   const reduced = useReducedMotion();
 
   useEffect(() => {
@@ -26,14 +24,6 @@ export default function Background() {
       color: d.color,
       duration: 14 + Math.random() * 8,
       delay: -(i * 3),
-    })));
-    setParticles(Array.from({ length: reduced ? 0 : 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 1.5 + 0.5,
-      duration: 10 + Math.random() * 8,
-      delay: -(Math.random() * 5),
     })));
   }, [reduced]);
 
@@ -73,23 +63,6 @@ export default function Background() {
         }}
       />
 
-      {/* 粒子 — 纯 CSS 动画 */}
-      {!reduced && particles.map((p) => (
-        <div
-          key={p.id}
-          className="absolute rounded-full"
-          style={{
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            width: p.size,
-            height: p.size,
-            background: "rgba(200,210,255,0.4)",
-            animation: `particle ${p.duration}s ${p.delay}s ease-in-out infinite`,
-            willChange: "transform, opacity",
-          }}
-        />
-      ))}
-
       {/* CSS keyframes */}
       <style>{`
         @keyframes orb-0 {
@@ -115,10 +88,6 @@ export default function Background() {
           25%       { transform: translate(-50%, -50%) translate(50px, -60px); }
           50%       { transform: translate(-50%, -50%) translate(-30px, -40px); }
           75%       { transform: translate(-50%, -50%) translate(60px, 30px); }
-        }
-        @keyframes particle {
-          0%, 100% { transform: translateY(-12px); opacity: 0.06; }
-          50%       { transform: translateY(12px);  opacity: 0.4; }
         }
       `}</style>
     </div>
