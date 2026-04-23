@@ -38,7 +38,7 @@ interface Props {
 export default function Dock({ active, onChange }: Props) {
   return (
     <motion.div
-      initial={{ y: 80, opacity: 0 }}
+      initial={{ y: 120, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
       className="fixed bottom-7 left-1/2 -translate-x-1/2 z-50"

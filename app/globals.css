@@ -33,6 +33,13 @@ body {
   border-radius: 3px;
 }
 
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hidden {
+  scrollbar-width: none;
+}
+
 .glass {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(16px);
