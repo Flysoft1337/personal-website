@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import HomeSection from "./sections/HomeSection";
 import AboutSection from "./sections/AboutSection";
 import SkillsSection from "./sections/SkillsSection";
@@ -20,11 +21,13 @@ const sectionMap: Record<string, React.ReactNode> = {
 interface Props { active: string; }
 
 export default function GlassWindow({ active }: Props) {
+  const reduced = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.93, y: 28 }}
+      initial={{ opacity: 0, scale: reduced ? 1 : 0.93, y: reduced ? 0 : 28 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: reduced ? 0.2 : 0.9, ease: [0.16, 1, 0.3, 1] }}
       className="relative w-full max-w-5xl mx-auto"
       style={{ height: "min(640px, 76vh)" }}
     >
@@ -90,7 +93,7 @@ export default function GlassWindow({ active }: Props) {
               background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)",
               transform: "skewX(-15deg)",
             }}
-            animate={{ left: ["-30%", "130%"] }}
+            animate={reduced ? {} : { left: ["-30%", "130%"] }}
             transition={{ duration: 3.5, repeat: Infinity, repeatDelay: 4, ease: "easeInOut" }}
           />
         </motion.div>

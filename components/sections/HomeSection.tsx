@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const roles = [
   { zh: "全栈开发者", en: "Full-Stack Developer" },
@@ -30,6 +31,7 @@ export default function HomeSection() {
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [timezone, setTimezone] = useState("");
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const t = setInterval(() => setRoleIndex((i) => (i + 1) % roles.length), 2800);
@@ -88,7 +90,7 @@ export default function HomeSection() {
           {/* 头像 */}
           <div className="relative shrink-0">
             <motion.div
-              animate={{ rotate: 360 }}
+              animate={reduced ? {} : { rotate: 360 }}
               transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
               className="absolute -inset-1.5 rounded-full opacity-60"
               style={{ background: "conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6)", borderRadius: "50%" }}
