@@ -12,7 +12,7 @@ export default function Home() {
     <div className="fixed inset-0 flex flex-col items-center justify-center overflow-hidden">
       <Background />
 
-      <div className="relative z-10 w-full px-4 flex flex-col items-center" style={{ paddingBottom: "100px" }}>
+      <div className="relative z-10 w-full px-6 flex flex-col items-center" style={{ paddingBottom: "100px" }}>
         <GlassWindow active={active} />
       </div>
 
