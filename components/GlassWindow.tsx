@@ -18,9 +18,9 @@ const sectionMap: Record<string, React.ReactNode> = {
   contact:  <ContactSection />,
 };
 
-interface Props { active: string; direction: number; }
+interface Props { active: string; }
 
-export default function GlassWindow({ active, direction }: Props) {
+export default function GlassWindow({ active }: Props) {
   const reduced = useReducedMotion();
 
   return (
@@ -83,13 +83,12 @@ export default function GlassWindow({ active, direction }: Props) {
 
         {/* 内容 */}
         <div className="flex-1 overflow-hidden relative z-10">
-          <AnimatePresence mode="wait" custom={direction}>
+          <AnimatePresence mode="wait">
             <motion.div
               key={active}
-              custom={direction}
-              initial={{ opacity: 0, x: reduced ? 0 : direction * 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: reduced ? 0 : direction * -40 }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.28, ease: "easeInOut" }}
               className="absolute inset-0"
             >
