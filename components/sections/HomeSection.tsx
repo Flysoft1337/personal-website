@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import GithubActivity from "@/components/GithubActivity";
 
 const roles = [
   { zh: "全栈开发者", en: "Full-Stack Developer" },
@@ -61,10 +62,7 @@ export default function HomeSection() {
         transition={{ duration: 0.5 }}
         className="flex items-center justify-between shrink-0"
       >
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-slate-400 text-xs">在线 / Online</span>
-        </div>
+        <div className="flex items-center gap-3" />
         {time && (
           <div
             className="flex items-center gap-2 px-3 py-1.5 rounded-xl"
@@ -261,6 +259,9 @@ export default function HomeSection() {
               ))}
             </div>
           </div>
+
+          {/* GitHub 动态 */}
+          <GithubActivity />
 
           {/* 诗句 */}
           <div className="pt-1 border-t border-white/5">
