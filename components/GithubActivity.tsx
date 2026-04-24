@@ -14,40 +14,10 @@ export default function GithubActivity() {
   const [events, setEvents] = useState<GithubEvent[]>([]);
 
   useEffect(() => {
-    fetch("https://api.github.com/users/Flysoft1337/events/public?per_page=10")
+    fetch("/api/github")
       .then((r) => r.json())
       .then((data) => {
-        if (!Array.isArray(data)) return;
-        const parsed: GithubEvent[] = [];
-        for (const e of data) {
-          if (parsed.length >= 3) break;
-          if (e.type === "PushEvent") {
-            const commits = e.payload?.commits;
-            if (commits?.length) {
-              parsed.push({
-                type: "push",
-                repo: e.repo.name.replace("Flysoft1337/", ""),
-                message: commits[commits.length - 1].message.split("\n")[0],
-                time: timeAgo(e.created_at),
-              });
-            }
-          } else if (e.type === "CreateEvent") {
-            parsed.push({
-              type: "create",
-              repo: e.repo.name.replace("Flysoft1337/", ""),
-              message: `创建了 ${e.payload.ref_type} ${e.payload.ref || ""}`.trim(),
-              time: timeAgo(e.created_at),
-            });
-          } else if (e.type === "PullRequestEvent" && e.payload.action === "opened") {
-            parsed.push({
-              type: "pr",
-              repo: e.repo.name.replace("Flysoft1337/", ""),
-              message: e.payload.pull_request.title,
-              time: timeAgo(e.created_at),
-            });
-          }
-        }
-        setEvents(parsed);
+        if (data?.events?.length) setEvents(data.events);
       })
       .catch(() => {});
   }, []);
@@ -56,7 +26,7 @@ export default function GithubActivity() {
 
   return (
     <div>
-      <p className="text-slate-600 text-xs mb-2">最近动态 / Recent Activity</p>
+      <p className="text-slate-600 text-xs mb-1.5">最近动态 / Activity</p>
       <div className="flex flex-col gap-1.5">
         {events.map((e, i) => (
           <motion.div
@@ -72,7 +42,7 @@ export default function GithubActivity() {
             </span>
             <div className="flex-1 min-w-0">
               <p className="text-slate-300 text-xs truncate">{e.message}</p>
-              <p className="text-slate-600 text-xs">{e.repo} · {e.time}</p>
+              <p className="text-slate-600 text-xs">{e.repo} · {timeAgo(e.time)}</p>
             </div>
           </motion.div>
         ))}
