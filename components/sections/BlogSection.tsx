@@ -1,7 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen } from "lucide-react";
+
+function BookOpenIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="28" height="28">
+      <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" /><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+    </svg>
+  );
+}
 
 export default function BlogSection() {
   return (
@@ -21,7 +28,7 @@ export default function BlogSection() {
           }}
         >
           <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 30% 30%, rgba(59,130,246,0.2) 0%, transparent 60%)" }} />
-          <BookOpen size={28} className="text-blue-400 relative" />
+          <span className="text-blue-400 relative"><BookOpenIcon /></span>
         </div>
         <h2
           className="text-2xl font-bold mb-2"

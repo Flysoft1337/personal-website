@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface Track {
   name: string;
@@ -10,14 +11,20 @@ interface Track {
   id: number;
 }
 
+let cachedTracks: Track[] | null = null;
+
 export default function MusicStatus() {
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [tracks, setTracks] = useState<Track[]>(cachedTracks || []);
 
   useEffect(() => {
+    if (cachedTracks) return;
     fetch("/api/music")
       .then((r) => r.json())
       .then((data) => {
-        if (data?.tracks?.length) setTracks(data.tracks);
+        if (data?.tracks?.length) {
+          cachedTracks = data.tracks;
+          setTracks(data.tracks);
+        }
       })
       .catch(() => {});
   }, []);
@@ -45,10 +52,12 @@ export default function MusicStatus() {
           >
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "radial-gradient(circle at 0% 50%, rgba(34,197,94,0.08) 0%, transparent 60%)" }} />
             {track.cover && (
-              <img
+              <Image
                 src={`${track.cover}?param=40y40`}
                 alt={track.name}
-                className="w-8 h-8 rounded-lg shrink-0 relative"
+                width={32}
+                height={32}
+                className="rounded-lg shrink-0 relative"
               />
             )}
             <div className="flex-1 min-w-0 relative">

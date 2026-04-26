@@ -10,14 +10,20 @@ interface GithubEvent {
   time: string;
 }
 
+let cachedEvents: GithubEvent[] | null = null;
+
 export default function GithubActivity() {
-  const [events, setEvents] = useState<GithubEvent[]>([]);
+  const [events, setEvents] = useState<GithubEvent[]>(cachedEvents || []);
 
   useEffect(() => {
+    if (cachedEvents) return;
     fetch("/api/github")
       .then((r) => r.json())
       .then((data) => {
-        if (data?.events?.length) setEvents(data.events);
+        if (data?.events?.length) {
+          cachedEvents = data.events;
+          setEvents(data.events);
+        }
       })
       .catch(() => {});
   }, []);
