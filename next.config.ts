@@ -10,7 +10,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "komarev.com",
+        hostname: "p1.music.126.net",
+      },
+      {
+        protocol: "https",
+        hostname: "p2.music.126.net",
       },
     ],
   },

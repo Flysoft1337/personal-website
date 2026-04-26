@@ -1,18 +1,33 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Send } from "lucide-react";
+
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+      <rect x="2" y="4" width="20" height="16" rx="2" /><polyline points="22 7 12 13 2 7" />
+    </svg>
+  );
+}
+
+function SendIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="18" height="18">
+      <line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />
+    </svg>
+  );
+}
 
 const contacts = [
   {
-    icon: <Mail size={18} />,
+    icon: <MailIcon />,
     label: "Email",
     value: "Flysoft1337@gmail.com",
     href: "mailto:Flysoft1337@gmail.com",
     color: "#f87171",
   },
   {
-    icon: <Send size={18} />,
+    icon: <SendIcon />,
     label: "Telegram",
     value: "@Flysoft1337",
     href: "https://t.me/Flysoft1337",
