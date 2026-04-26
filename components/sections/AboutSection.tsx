@@ -10,9 +10,9 @@ const cards = [
 ];
 
 const stats = [
-  { num: "9+", label: "仓库", labelEn: "Repos" },
-  { num: "8+", label: "语言", labelEn: "Languages" },
-  { num: "2022", label: "加入", labelEn: "Since" },
+  { num: "9+", label: "仓库", labelEn: "Repos", color: "#3b82f6" },
+  { num: "8+", label: "语言", labelEn: "Languages", color: "#8b5cf6" },
+  { num: "2022", label: "加入", labelEn: "Since", color: "#06b6d4" },
 ];
 
 const interests = ["Web 全栈", "Android 内核", "开源项目", "独立产品", "系统底层"];
@@ -70,22 +70,15 @@ export default function AboutSection() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * i, duration: 0.35 }}
-              className="rounded-xl p-4 text-center"
+              className="rounded-xl p-4 text-center relative overflow-hidden group"
               style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
-              <p
-                className="text-2xl font-bold"
-                style={{
-                  background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `radial-gradient(circle at 50% 0%, ${s.color}15 0%, transparent 70%)` }} />
+              <p className="text-2xl font-bold relative" style={{ color: s.color }}>
                 {s.num}
               </p>
-              <p className="text-slate-400 text-xs mt-0.5">{s.label}</p>
-              <p className="text-slate-600 text-xs">{s.labelEn}</p>
+              <p className="text-slate-400 text-xs mt-0.5 relative">{s.label}</p>
+              <p className="text-slate-600 text-xs relative">{s.labelEn}</p>
             </motion.div>
           ))}
         </div>
@@ -98,14 +91,15 @@ export default function AboutSection() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.08 * i, duration: 0.35 }}
-              className="rounded-xl p-4 transition-all duration-200 hover:-translate-y-0.5"
+              className="group rounded-xl p-4 transition-all duration-200 hover:-translate-y-1 relative overflow-hidden"
               style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
             >
-              <p className="text-slate-500 text-xs mb-1">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "radial-gradient(circle at 50% 0%, rgba(59,130,246,0.08) 0%, transparent 60%)" }} />
+              <p className="text-slate-500 text-xs mb-1 relative">
                 {item.label} <span className="text-slate-700">/ {item.labelEn}</span>
               </p>
-              <p className="text-slate-200 text-sm font-medium">{item.value}</p>
-              <p className="text-slate-600 text-xs mt-0.5">{item.valueEn}</p>
+              <p className="text-slate-200 text-sm font-medium relative">{item.value}</p>
+              <p className="text-slate-600 text-xs mt-0.5 relative">{item.valueEn}</p>
             </motion.div>
           ))}
         </div>

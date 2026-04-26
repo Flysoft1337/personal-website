@@ -40,21 +40,22 @@ export default function MusicStatus() {
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 + i * 0.08 }}
-            className="flex items-center gap-3 px-3 py-2 rounded-xl group transition-all duration-200 hover:-translate-y-0.5"
+            className="flex items-center gap-3 px-3 py-2 rounded-xl group transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden"
             style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
           >
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: "radial-gradient(circle at 0% 50%, rgba(34,197,94,0.08) 0%, transparent 60%)" }} />
             {track.cover && (
               <img
                 src={`${track.cover}?param=40y40`}
                 alt={track.name}
-                className="w-8 h-8 rounded-lg shrink-0"
+                className="w-8 h-8 rounded-lg shrink-0 relative"
               />
             )}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 relative">
               <p className="text-slate-300 text-xs truncate">{track.name}</p>
               <p className="text-slate-600 text-xs truncate">{track.artist}</p>
             </div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14" className="text-slate-700 group-hover:text-green-400 transition-colors shrink-0">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="14" height="14" className="text-slate-700 group-hover:text-green-400 transition-colors shrink-0 relative">
               <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
             </svg>
           </motion.a>

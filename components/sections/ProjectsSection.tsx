@@ -66,17 +66,19 @@ export default function ProjectsSection() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
-              className="group rounded-2xl p-5 transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden"
+              className="group rounded-2xl p-5 transition-all duration-200 hover:-translate-y-1 relative overflow-hidden"
               style={{
                 background: "rgba(255,255,255,0.04)",
                 border: "1px solid rgba(255,255,255,0.07)",
               }}
             >
-              {/* 悬停光效 */}
+              {project.featured && (
+                <div className="absolute top-0 left-8 right-8 h-px pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.5), rgba(139,92,246,0.5), transparent)" }} />
+              )}
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 style={{
-                  background: "radial-gradient(circle at 50% 0%, rgba(59,130,246,0.08) 0%, transparent 60%)",
+                  background: "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(59,130,246,0.1) 0%, transparent 60%)",
                 }}
               />
 
@@ -117,9 +119,9 @@ export default function ProjectsSection() {
                     key={t}
                     className="text-xs px-2 py-0.5 rounded-md"
                     style={{
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      color: "#94a3b8",
+                      background: "rgba(59,130,246,0.08)",
+                      border: "1px solid rgba(59,130,246,0.15)",
+                      color: "#93c5fd",
                     }}
                   >
                     {t}

@@ -34,13 +34,14 @@ export default function GithubActivity() {
             initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 + i * 0.08 }}
-            className="flex items-center gap-2 px-3 py-2 rounded-xl"
+            className="group flex items-center gap-2 px-3 py-2 rounded-xl relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
             style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
           >
-            <span className="text-xs shrink-0" style={{ color: typeColor(e.type) }}>
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `radial-gradient(circle at 0% 50%, ${typeColor(e.type)}12 0%, transparent 60%)` }} />
+            <span className="relative w-5 h-5 rounded-md flex items-center justify-center text-xs shrink-0" style={{ background: `${typeColor(e.type)}20`, color: typeColor(e.type) }}>
               {typeIcon(e.type)}
             </span>
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 relative">
               <p className="text-slate-300 text-xs truncate">{e.message}</p>
               <p className="text-slate-600 text-xs">{e.repo} · {timeAgo(e.time)}</p>
             </div>

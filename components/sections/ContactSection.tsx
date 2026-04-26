@@ -68,20 +68,21 @@ export default function ContactSection() {
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1, duration: 0.35 }}
-              className="flex items-center gap-4 px-5 py-4 rounded-xl group transition-all duration-200 hover:-translate-y-0.5"
+              className="flex items-center gap-4 px-5 py-4 rounded-xl group transition-all duration-200 hover:-translate-y-1 relative overflow-hidden"
               style={{
                 background: "rgba(255,255,255,0.04)",
                 border: "1px solid rgba(255,255,255,0.07)",
               }}
             >
-              <span style={{ color: item.color }} className="transition-transform group-hover:scale-110">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `radial-gradient(circle at 0% 50%, ${item.color}12 0%, transparent 60%)` }} />
+              <span className="relative w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110" style={{ background: `${item.color}15`, color: item.color }}>
                 {item.icon}
               </span>
-              <div className="flex-1">
+              <div className="flex-1 relative">
                 <p className="text-slate-500 text-xs">{item.label}</p>
                 <p className="text-slate-200 text-sm font-medium">{item.value}</p>
               </div>
-              <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-sm">→</span>
+              <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-sm relative">→</span>
             </motion.a>
           ))}
         </div>

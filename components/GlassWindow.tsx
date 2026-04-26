@@ -1,27 +1,30 @@
 "use client";
 
+import { memo, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import HomeSection from "./sections/HomeSection";
-import AboutSection from "./sections/AboutSection";
-import SkillsSection from "./sections/SkillsSection";
-import ProjectsSection from "./sections/ProjectsSection";
-import BlogSection from "./sections/BlogSection";
-import ContactSection from "./sections/ContactSection";
 
-const sectionMap: Record<string, React.ReactNode> = {
-  home:     <HomeSection />,
-  about:    <AboutSection />,
-  skills:   <SkillsSection />,
-  projects: <ProjectsSection />,
-  blog:     <BlogSection />,
-  contact:  <ContactSection />,
+const HomeSection = lazy(() => import("./sections/HomeSection"));
+const AboutSection = lazy(() => import("./sections/AboutSection"));
+const SkillsSection = lazy(() => import("./sections/SkillsSection"));
+const ProjectsSection = lazy(() => import("./sections/ProjectsSection"));
+const BlogSection = lazy(() => import("./sections/BlogSection"));
+const ContactSection = lazy(() => import("./sections/ContactSection"));
+
+const sectionComponents: Record<string, React.LazyExoticComponent<() => React.JSX.Element>> = {
+  home: HomeSection,
+  about: AboutSection,
+  skills: SkillsSection,
+  projects: ProjectsSection,
+  blog: BlogSection,
+  contact: ContactSection,
 };
 
 interface Props { active: string; }
 
-export default function GlassWindow({ active }: Props) {
+function GlassWindow({ active }: Props) {
   const reduced = useReducedMotion();
+  const ActiveComponent = sectionComponents[active];
 
   return (
     <motion.div
@@ -47,11 +50,12 @@ export default function GlassWindow({ active }: Props) {
         className="relative w-full h-full overflow-hidden flex flex-col"
         style={{
           borderRadius: "24px",
-          background: "rgba(8, 12, 28, 0.18)",
-          backdropFilter: "blur(24px) saturate(180%)",
-          WebkitBackdropFilter: "blur(24px) saturate(180%)",
+          background: "rgba(8, 12, 28, 0.22)",
+          backdropFilter: "blur(16px) saturate(160%)",
+          WebkitBackdropFilter: "blur(16px) saturate(160%)",
           border: "1px solid rgba(255,255,255,0.1)",
           boxShadow: "0 40px 80px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.15)",
+          contain: "layout style paint",
         }}
       >
         {/* 顶部高光条 */}
@@ -92,18 +96,15 @@ export default function GlassWindow({ active }: Props) {
               transition={{ duration: 0.28, ease: "easeInOut" }}
               className="absolute inset-0"
             >
-              {sectionMap[active]}
+              <Suspense fallback={null}>
+                <ActiveComponent />
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
-
-      <style>{`
-        @keyframes border-rotate {
-          from { --angle: 0deg; }
-          to   { --angle: 360deg; }
-        }
-      `}</style>
     </motion.div>
   );
 }
+
+export default memo(GlassWindow);
