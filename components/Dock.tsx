@@ -47,8 +47,8 @@ export default function Dock({ active, onChange }: Props) {
         className="flex items-center gap-0.5 px-2 py-2 rounded-2xl"
         style={{
           background: "rgba(5, 8, 20, 0.35)",
-          backdropFilter: "blur(48px) saturate(200%)",
-          WebkitBackdropFilter: "blur(48px) saturate(200%)",
+          backdropFilter: "blur(20px) saturate(180%)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%)",
           border: "1px solid rgba(255,255,255,0.12)",
           boxShadow: "0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.2)",
         }}
@@ -61,7 +61,7 @@ export default function Dock({ active, onChange }: Props) {
               onClick={() => onChange(id)}
               title={label}
               className="relative flex flex-col items-center justify-center w-14 h-12 rounded-xl outline-none transition-all duration-200 hover:scale-105 active:scale-95"
-              style={{ color: isActive ? "#fff" : "rgba(148,163,184,0.55)" }}
+              style={{ color: isActive ? "#fff" : "rgba(148,163,184,0.7)" }}
             >
               {isActive && (
                 <motion.div
@@ -74,6 +74,9 @@ export default function Dock({ active, onChange }: Props) {
                   }}
                   transition={{ type: "spring", stiffness: 450, damping: 32 }}
                 />
+              )}
+              {!isActive && (
+                <div className="absolute inset-0 rounded-xl opacity-0 hover:opacity-100 transition-opacity duration-200" style={{ background: "rgba(255,255,255,0.06)" }} />
               )}
               <span className="relative z-10 mb-0.5"><Icon /></span>
               <span className="relative z-10 text-[10px] leading-none font-medium tracking-wide whitespace-nowrap">

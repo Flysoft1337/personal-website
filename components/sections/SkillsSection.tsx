@@ -100,13 +100,14 @@ export default function SkillsSection() {
                     initial={{ opacity: 0, scale: 0.85 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: gi * 0.07 + si * 0.03, duration: 0.3 }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-200 hover:-translate-y-0.5 cursor-default"
-                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                    className="group/skill flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-200 hover:-translate-y-0.5 cursor-default relative overflow-hidden"
+                    style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${skill.color}18` }}
                   >
-                    <span className="text-xs font-bold font-mono min-w-[24px] text-center" style={{ color: skill.color }}>
+                    <div className="absolute inset-0 opacity-0 group-hover/skill:opacity-100 transition-opacity duration-300" style={{ background: `radial-gradient(circle at 0% 50%, ${skill.color}15 0%, transparent 70%)` }} />
+                    <span className="relative w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold font-mono shrink-0" style={{ background: `${skill.color}20`, color: skill.color }}>
                       {skill.icon}
                     </span>
-                    <span className="text-slate-300 text-xs">{skill.name}</span>
+                    <span className="text-slate-300 text-xs relative">{skill.name}</span>
                   </motion.div>
                 ))}
               </div>

@@ -14,10 +14,23 @@ const roles = [
 ];
 
 const stats = [
-  { label: "仓库", value: "9+" },
-  { label: "语言", value: "8+" },
-  { label: "加入", value: "2022" },
-  { label: "状态", value: "活跃" },
+  { label: "仓库", value: "9+", color: "#3b82f6" },
+  { label: "语言", value: "8+", color: "#8b5cf6" },
+  { label: "加入", value: "2022", color: "#06b6d4" },
+  { label: "状态", value: "活跃", color: "#10b981" },
+];
+
+const techStack = [
+  { name: "TypeScript", color: "#3178c6" },
+  { name: "Next.js", color: "#a3a3a3" },
+  { name: "React", color: "#61dafb" },
+  { name: "Node.js", color: "#339933" },
+  { name: "Kotlin", color: "#7f52ff" },
+  { name: "Dart", color: "#00b4ab" },
+  { name: "PHP", color: "#777bb4" },
+  { name: "Python", color: "#3776ab" },
+  { name: "Linux", color: "#fcc624" },
+  { name: "Shell", color: "#89e051" },
 ];
 
 function GithubIcon() {
@@ -28,17 +41,10 @@ function GithubIcon() {
   );
 }
 
-export default function HomeSection() {
-  const [roleIndex, setRoleIndex] = useState(0);
+function Clock() {
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [timezone, setTimezone] = useState("");
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    const t = setInterval(() => setRoleIndex((i) => (i + 1) % roles.length), 2800);
-    return () => clearInterval(t);
-  }, []);
 
   useEffect(() => {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -50,6 +56,29 @@ export default function HomeSection() {
     };
     tick();
     const t = setInterval(tick, 1000);
+    return () => clearInterval(t);
+  }, []);
+
+  if (!time) return null;
+
+  return (
+    <div
+      className="flex items-center gap-2 px-3 py-1.5 rounded-xl"
+      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+    >
+      <span className="text-slate-500 text-xs hidden sm:block">{date}</span>
+      <span className="text-slate-200 text-xs font-mono tracking-widest">{time}</span>
+      <span className="text-slate-600 text-xs hidden md:block">{timezone}</span>
+    </div>
+  );
+}
+
+export default function HomeSection() {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    const t = setInterval(() => setRoleIndex((i) => (i + 1) % roles.length), 2800);
     return () => clearInterval(t);
   }, []);
 
@@ -66,11 +95,13 @@ export default function HomeSection() {
         {/* 头像 + 名字 横排 */}
         <div className="flex items-center gap-3">
           <div className="relative shrink-0">
-            <motion.div
-              animate={reduced ? {} : { rotate: 360 }}
-              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+            <div
               className="absolute -inset-1 rounded-full opacity-60"
-              style={{ background: "conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6)", borderRadius: "50%" }}
+              style={{
+                background: "conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6)",
+                borderRadius: "50%",
+                animation: reduced ? "none" : "avatar-spin 12s linear infinite",
+              }}
             />
             <Image
               src="https://avatars.githubusercontent.com/u/97880172?v=4"
@@ -110,16 +141,7 @@ export default function HomeSection() {
         </div>
 
         {/* 时间 */}
-        {time && (
-          <div
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
-          >
-            <span className="text-slate-500 text-xs hidden sm:block">{date}</span>
-            <span className="text-slate-200 text-xs font-mono tracking-widest">{time}</span>
-            <span className="text-slate-600 text-xs hidden md:block">{timezone}</span>
-          </div>
-        )}
+        <Clock />
       </motion.div>
 
       {/* 座右铭 */}
@@ -155,31 +177,36 @@ export default function HomeSection() {
           </div>
 
           <div className="grid grid-cols-4 gap-1.5">
-            {stats.map((s) => (
-              <div
+            {stats.map((s, i) => (
+              <motion.div
                 key={s.label}
-                className="rounded-lg py-2 text-center"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.06 }}
+                className="rounded-lg py-2 text-center relative overflow-hidden group"
                 style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
               >
-                <p className="text-sm font-bold" style={{
-                  background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
-                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-                }}>{s.value}</p>
-                <p className="text-slate-500 text-xs">{s.label}</p>
-              </div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `radial-gradient(circle at 50% 0%, ${s.color}15 0%, transparent 70%)` }} />
+                <p className="text-sm font-bold relative" style={{ color: s.color }}>{s.value}</p>
+                <p className="text-slate-500 text-xs relative">{s.label}</p>
+              </motion.div>
             ))}
           </div>
 
           <div>
             <p className="text-slate-600 text-xs mb-1.5">技术栈 / Stack</p>
             <div className="flex flex-wrap gap-1">
-              {["TypeScript", "Next.js", "React", "Node.js", "Kotlin", "Dart", "PHP", "Python", "Linux", "Shell"].map((tag) => (
+              {techStack.map((tag) => (
                 <span
-                  key={tag}
-                  className="px-2 py-0.5 rounded-md text-xs text-slate-400"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                  key={tag.name}
+                  className="px-2 py-0.5 rounded-md text-xs transition-colors duration-200"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: `1px solid ${tag.color}25`,
+                    color: tag.color,
+                  }}
                 >
-                  {tag}
+                  {tag.name}
                 </span>
               ))}
             </div>
@@ -190,14 +217,14 @@ export default function HomeSection() {
               href="https://github.com/Flysoft1337"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-white transition-all hover:scale-105"
-              style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", boxShadow: "0 4px 16px rgba(59,130,246,0.3)" }}
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-white transition-all duration-200 hover:scale-105 hover:shadow-[0_6px_24px_rgba(59,130,246,0.35)]"
+              style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", boxShadow: "0 4px 16px rgba(59,130,246,0.25)" }}
             >
               <GithubIcon /> GitHub
             </a>
             <a
               href="mailto:Flysoft1337@gmail.com"
-              className="flex-1 flex items-center justify-center px-3 py-2 rounded-xl text-xs font-medium text-slate-300 transition-all hover:scale-105 hover:text-white"
+              className="flex-1 flex items-center justify-center px-3 py-2 rounded-xl text-xs font-medium text-slate-300 transition-all duration-200 hover:scale-105 hover:text-white hover:border-blue-500/30"
               style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}
             >
               联系我
@@ -216,22 +243,23 @@ export default function HomeSection() {
             <p className="text-slate-600 text-xs mb-1.5">最近项目 / Recent</p>
             <div className="flex flex-col gap-1.5">
               {[
-                { name: "RoamHub", desc: "独立产品 · Kotlin + JS", href: "https://github.com/Flysoft1337/RoamHub_Feedback" },
-                { name: "Smart Repair", desc: "全栈系统 · TypeScript", href: "https://github.com/Flysoft1337/smart-repair-frontend" },
+                { name: "RoamHub", desc: "独立产品 · Kotlin + JS", href: "https://github.com/Flysoft1337/RoamHub_Feedback", color: "#8b5cf6" },
+                { name: "Smart Repair", desc: "全栈系统 · TypeScript", href: "https://github.com/Flysoft1337/smart-repair-frontend", color: "#3b82f6" },
               ].map((p) => (
                 <a
                   key={p.name}
                   href={p.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between px-3 py-2 rounded-xl group transition-all duration-200 hover:-translate-y-0.5"
+                  className="flex items-center justify-between px-3 py-2 rounded-xl group transition-all duration-200 hover:-translate-y-0.5 relative overflow-hidden"
                   style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
                 >
-                  <div>
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `radial-gradient(circle at 0% 50%, ${p.color}12 0%, transparent 60%)` }} />
+                  <div className="relative">
                     <p className="text-slate-200 text-xs font-medium">{p.name}</p>
                     <p className="text-slate-600 text-xs">{p.desc}</p>
                   </div>
-                  <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs">→</span>
+                  <span className="text-slate-700 group-hover:text-slate-400 transition-colors text-xs relative">→</span>
                 </a>
               ))}
             </div>

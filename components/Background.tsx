@@ -11,10 +11,10 @@ export default function Background() {
 
   useEffect(() => {
     const defs = [
-      { color: "#3b82f6", x: 10, y: 15, size: 600 },
-      { color: "#8b5cf6", x: 80, y: 10, size: 560 },
-      { color: "#ec4899", x: 88, y: 78, size: 500 },
-      { color: "#06b6d4", x: 5,  y: 80, size: 520 },
+      { color: "#3b82f6", x: 10, y: 15, size: 480 },
+      { color: "#8b5cf6", x: 80, y: 10, size: 440 },
+      { color: "#ec4899", x: 88, y: 78, size: 400 },
+      { color: "#06b6d4", x: 5,  y: 80, size: 420 },
     ];
     setOrbs(defs.map((d, i) => ({
       id: i,
@@ -28,7 +28,7 @@ export default function Background() {
   }, [reduced]);
 
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ contain: "strict" }}>
       <div className="absolute inset-0" style={{ background: "#050810" }} />
 
       {/* 光球 — 纯 CSS 动画 */}
@@ -43,9 +43,10 @@ export default function Background() {
             height: orb.size,
             transform: "translate(-50%, -50%)",
             background: `radial-gradient(circle at 40% 40%, ${orb.color}50 0%, ${orb.color}20 40%, transparent 70%)`,
-            filter: "blur(60px)",
+            filter: "blur(40px)",
             animation: reduced ? "none" : `orb-${i} ${orb.duration}s ${orb.delay}s ease-in-out infinite`,
             willChange: "transform",
+            contain: "layout style paint",
           }}
         />
       ))}
@@ -60,6 +61,7 @@ export default function Background() {
         style={{
           backgroundImage: "linear-gradient(rgba(99,102,241,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.07) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
+          contain: "strict",
         }}
       />
 

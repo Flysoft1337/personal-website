@@ -13,13 +13,15 @@ export default function BlogSection() {
         className="text-center max-w-sm"
       >
         <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+          className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 relative overflow-hidden"
           style={{
             background: "rgba(59,130,246,0.1)",
             border: "1px solid rgba(59,130,246,0.2)",
+            boxShadow: "0 0 30px rgba(59,130,246,0.15)",
           }}
         >
-          <BookOpen size={28} className="text-blue-400" />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 30% 30%, rgba(59,130,246,0.2) 0%, transparent 60%)" }} />
+          <BookOpen size={28} className="text-blue-400 relative" />
         </div>
         <h2
           className="text-2xl font-bold mb-2"
